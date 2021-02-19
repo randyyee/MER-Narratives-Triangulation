@@ -324,6 +324,8 @@ shinyServer(function(input, output, session) {
     
     num_narratives = nrow(narratives_df)
     
+    num_operating_units = length(unique(narratives_df[["Operating Unit"]]))
+    
     tf_idf_calc <- narratives_df %>%
       mutate(row_num = 1:n()) %>%
       unnest_tokens(word, Narrative) %>%
@@ -337,7 +339,7 @@ shinyServer(function(input, output, session) {
       mutate(covid_idf = ifelse(covid_n == 0, 0, log(num_narratives/covid_n))) %>%
       mutate(covid_tfidf = covid_tf * covid_idf) %>%
       group_by(`Operating Unit`) %>%
-      summarise('Total Words' = sum(total), 'Covid Words' = sum(covid_n), 'Covid TF' = sum(covid_tf), 'COVID IDF' = sum(covid_idf), 'TFIDF' = mean(covid_tfidf))
+      summarise('Total Words' = sum(total), 'Covid Words' = sum(covid_n), 'Covid TF' = sum(covid_n)/sum(total), 'Num Narratives' = n_distinct(num_narratives), 'TFIDF' = ifelse(sum(covid_n) == 0, 0, sum(covid_n)*log(num_narratives/sum(covid_n))/sum(total)))
     
     tf_idf_calc <- tf_idf_calc[order(-tf_idf_calc$TFIDF),]
     
@@ -345,7 +347,8 @@ shinyServer(function(input, output, session) {
                   selection = "single",
                   rownames=FALSE,
                   filter="top",
-                  options = list(
+                  options = list(columnDefs = list(list(
+                    targets = c(1, 3), searchable = FALSE)),
                     searchHighlight = TRUE,
                     scroller = TRUE,
                     scrollX = TRUE,

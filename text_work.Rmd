@@ -240,23 +240,33 @@ Potential if_idf options:
 
 
 ```{r}
-num_narratives = nrow(narratives_df)
-
 # Create ICPI Covid list before running this code
 tf_idf_calc <- narratives_df %>%
-  mutate(row_num = 1:n()) %>%
-  unnest_tokens(word, Narrative) %>%
-  anti_join(stop_words) %>%
-  mutate(covid = if_else(word %in% icpi_covid_list, 1, 0)) %>%
-  group_by_at(vars(-word, -covid)) %>%
-  summarise(total = n(),
-            covid_n = sum(covid)) %>%
-  ungroup() %>%
-  mutate(covid_tf = covid_n/ total) %>%
-  mutate(covid_idf = ifelse(covid_n == 0, 0, log(num_narratives/covid_n))) %>%
-  mutate(covid_tfidf = covid_tf * covid_idf) %>%
-  group_by(`Operating Unit`) %>%
-  summarise(total = sum(total), covid_n = sum(covid_n), covid_tf = sum(covid_tf), covid_idf = sum(covid_idf), covid_tfidf = mean(covid_tfidf))
+      mutate(row_num = 1:n()) %>%
+      unnest_tokens(word, Narrative) %>%
+      anti_join(stop_words) %>%
+      mutate(covid = if_else(word %in% icpi_covid_list, 1, 0)) %>%
+      group_by_at(vars(-word, -covid)) %>%
+      summarise(total = n(),
+                covid_n = sum(covid)) %>%
+      ungroup() %>%
+      mutate(covid_tf = covid_n/ total) %>%
+      mutate(covid_idf = ifelse(covid_n == 0, 0, log(num_narratives/covid_n))) %>%
+      mutate(covid_tfidf = covid_tf * covid_idf) %>%
+      group_by(`Operating Unit`) %>%
+      summarise('Total Words' = sum(total), 'Covid Words' = sum(covid_n), 'Covid TF' = sum(covid_n)/sum(total), 'Num Narratives' = n_distinct(row_num), 'TFIDF' = ifelse(sum(covid_n) == 0, 0, sum(covid_n)*log(n_distinct(row_num)/(sum(covid_n)))/sum(total)))
+    
+icpi_covid_list <- c(
+  "covid19",
+  "covid",
+  "lockdown",
+  "social",
+  "distancing",
+  "distance",
+  "isolation",
+  "isolate",
+  "quarantine" 
+)
 
 narrative_words <- narratives_df %>%
   #mutate(row_num = 1:n()) %>%
@@ -266,15 +276,17 @@ narrative_words <- narratives_df %>%
 total_words <- narrative_words %>%
   group_by(`Operating Unit`) %>%
   summarize(total = sum(n))
+
 narrative_words <- left_join(narrative_words, total_words)
-narrative_words
+covid_narrative_words <- narrative_words[narrative_words$word %in% icpi_covid_list,]
+covid_narrative_words
 ```
 
 ## Histogram of word frequencies
 
 ```{r}
-ggplot(narrative_words, aes(n/total, fill = `Operating Unit`)) +
-  geom_histogram(show.legend = F) +
+ggplot(covid_narrative_words, aes(n/total, fill = `Operating Unit`)) +
+  geom_histogram(show.legend = FALSE, bins = 20) +
   facet_wrap(~`Operating Unit`, scales = "free_y")
 ```
 
@@ -287,13 +299,15 @@ freq_by_rank <- narrative_words %>%
     rank = row_number(),
     `term frequency` = n/total
   )
-freq_by_rank
+
+covid_freq_by_rank <- freq_by_rank[freq_by_rank$word %in% icpi_covid_list,]
+covid_freq_by_rank
 ```
 
 ## Plot word frequencies
 
 ```{r}
-freq_by_rank %>%
+covid_freq_by_rank %>%
   ggplot(aes(rank, `term frequency`, color = `Operating Unit`)) +
   geom_line(size = 1.1, alpha = 0.8, show.legend = F) +
   scale_x_log10() +
@@ -303,7 +317,7 @@ freq_by_rank %>%
 ## Test Zipf's law assumption
 
 ```{r}
-rank_subset <- freq_by_rank %>%
+rank_subset <- covid_freq_by_rank %>%
   filter(rank < 500, rank > 10)
 lm(log10(`term frequency`) ~ log10(rank), data = rank_subset)
 ```
@@ -459,17 +473,6 @@ bigrams_filtered %>%
 # 5) LIWC
 
 ```{r}
-icpi_covid_list <- c(
-  "covid19",
-  "covid",
-  "lockdown",
-  "social",
-  "distancing",
-  "distance",
-  "isolation",
-  "isolate",
-  "quarantine" 
-)
 liwc_summary <- narratives_df %>%
   mutate(row_num = 1:n()) %>%
   unnest_tokens(word, Narrative) %>%
