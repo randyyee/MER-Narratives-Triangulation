@@ -109,7 +109,7 @@ server <- function(input, output, session) {
     },
     # This function throws an error if the login is not successful
     error = function(e) {
-      flog.info(paste0("User ", input$username, " login failed."), name = "datapack")
+      flog.info(paste0("User ", input$user_name, " login failed."), name = "datapack")
     }
     )
     
