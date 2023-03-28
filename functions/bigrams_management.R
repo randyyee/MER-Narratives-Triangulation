@@ -6,7 +6,7 @@ prepare_bigrams <- function(dataset, sentiments, stopwords, negationwords, numm)
   negationwords <- negationwords %>% mutate(negate = "negate")
   
   dataset %>%
-    unnest_tokens(ngram, Narrative, token = "ngrams", n = numm) %>%
+    unnest_tokens(ngram, Narrative, token = "ngrams", n = numm, drop = F) %>%
     mutate(ngram = str_replace(ngram, "\\s", "|")) %>%
     separate(ngram, into = c("word1", "word2"), sep = "\\|") %>%
     filter(!word1 %in% stopwords2$word, # stopwords - negation
