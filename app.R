@@ -34,7 +34,7 @@ ui <- dashboardPage(skin = "red",
                     ),
                     
                     dashboardBody(# ShinyICPI: Narratives Explorer (SHiNE) 
-source("global.R")
+# source("global.R")
 # UI ----
 ui <- navbarPage(theme = bs_theme(version = 5, bootswatch = "yeti"),
                  title = "ShinyICPI: Narratives Explorer (ShINE)",
@@ -72,37 +72,38 @@ ui <- navbarPage(theme = bs_theme(version = 5, bootswatch = "yeti"),
                                                "))),
                                       
                                       fluidRow(
-                                        column(12,
-                                               card(full_screen = TRUE,
-                                                    card_header("Indicator Trends"),
-                                                    card_body_fill(plotOutput("trends"))
-                                               )
-                                        )
+                                        # column(12,
+                                        #        card(full_screen = TRUE,
+                                        #             card_header("Indicator Trends"),
+                                        #             card_body_fill(plotOutput("trends"))
+                                        #        )
+                                        # )
                                       ),
                                       
                                       fluidRow(
-                                        column(4,
-                                               navs_tab_card(full_screen = TRUE,
-                                                             nav("Sentiments", 
-                                                                 card_body_fill(plotOutput("sentimentplot"))
-                                                             ),
-                                                             nav("Top 10 Contributions",
-                                                                 card_body_fill(plotOutput("contribution"))
-                                                             )
-                                               )
+                                        # column(4,
+                                        #        navs_tab_card(full_screen = TRUE,
+                                        #                      nav("Sentiments", 
+                                        #                          card_body_fill(plotOutput("sentimentplot"))
+                                        #                      ),
+                                        #                      nav("Top 10 Contributions",
+                                        #                          card_body_fill(plotOutput("contribution"))
+                                        #                      )
+                                        #        )
+                                        # ),
+                                        # column(4,
+                                        #        card(full_screen = TRUE,
+                                        #             card_header("Bigram Network"),
+                                        #             card_body_fill(plotOutput("bigramviz"))
+                                        #        )
+                                        # ),
+                                        # column(4,
+                                        #        card(full_screen = TRUE,
+                                        #             card_header("Wordcloud"),
+                                        #             card_body_fill(wordcloud2Output("wordcloudy"))
+                                        #        )
+                                        # )
                                         ),
-                                        column(4,
-                                               card(full_screen = TRUE,
-                                                    card_header("Bigram Network"),
-                                                    card_body_fill(plotOutput("bigramviz"))
-                                               )
-                                        ),
-                                        column(4,
-                                               card(full_screen = TRUE,
-                                                    card_header("Wordcloud"),
-                                                    card_body_fill(wordcloud2Output("wordcloudy"))
-                                               )
-                                        )),
                                       tabBox(width = 12,
                                              tabPanel("Summary", reactableOutput("mertable")),
                                              tabPanel("Raw Data: Narratives", dataTableOutput("narrativesdt")),
@@ -116,7 +117,7 @@ ui <- navbarPage(theme = bs_theme(version = 5, bootswatch = "yeti"),
                           )
                  )
 )
-
+))
 
 # /////////////////////////////////////////////////////////////////////////////////////////
 # Server ----
@@ -543,7 +544,7 @@ shinyApp(ui = ui, server = server)
     .tabbable > .nav > li > a[data-value=\'MSD Pivot\'] {background-color: red; color:white}
     .tabbable > .nav > li > a[data-value=\'Bigrams\'] {background-color: grey; color:white}
     .tabbable > .nav > li > a[data-value=\'Setences\'] {background-color: grey; color:white}
-    .tabbable > .nav > li[class=active]    n> a {background-color: red; color:white}'))),
+    .tabbable > .nav > li[class=active]    n> a {background-color: red; color:white}')))#,
                       
                       fluidRow(
                         box(width = 12,
@@ -552,7 +553,7 @@ shinyApp(ui = ui, server = server)
                             plotOutput("trends")
                             #plotlyOutput("trends")
                         )
-                      ),
+                      )#,
                       
                       fluidRow(
                         tabBox(width = 4,
@@ -567,7 +568,7 @@ shinyApp(ui = ui, server = server)
                             title = "Wordcloud",
                             wordcloud2Output("wordcloudy")
                         )
-                      ),
+                      )#,
                       
                       fluidRow(
                         tabBox(width = 12,
@@ -580,8 +581,8 @@ shinyApp(ui = ui, server = server)
                                tabPanel("Resources: Bigrams", dataTableOutput("narratives_ngrams")),
                                tabPanel("Resources: Sentences", dataTableOutput("narratives_sentences")))
                       )
-                    )
-)
+#                     )
+# )
 
 
 # /////////////////////////////////////////////////////////////////////////////////////////
