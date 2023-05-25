@@ -303,6 +303,8 @@ server <- function(input, output, session) {
       user_input$d2_session  <-  d2_default_session$clone()
       d2_default_session <- NULL
       
+      source("dataimport.R")
+      
       # Need to check the user is a member of the PRIME Data Systems Group, COP Memo group, or a super user
       # user_input$memo_authorized <-
       #   grepl("VDEqY8YeCEk|ezh8nmc4JbX", user_input$d2_session$me$userGroups) |
