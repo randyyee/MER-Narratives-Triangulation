@@ -1,0 +1,1 @@
+ui <- shinyUI(uiOutput("ui"))
