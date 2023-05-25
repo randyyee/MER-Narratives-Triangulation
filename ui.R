@@ -1,3 +1,1 @@
-shinyUI(
-  uiOutput("ui")
-)
+ui <- shinyUI(uiOutput("ui"))
