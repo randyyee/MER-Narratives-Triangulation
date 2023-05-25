@@ -14,6 +14,10 @@ negationwords <- readxl::read_excel("data/HIV_AIDS_Narrative_Resources.xlsx", sh
 
 #### Narratives Resources ####
 
+try({
+  s3_connect() #test
+})
+
 narratives_df <- aws.s3::s3read_using(FUN       = readxl::read_excel,
                                       col_types = "text",
                                       bucket    = Sys.getenv("TEST_BUCKET"),

@@ -26,6 +26,8 @@ library(xml2)
 
 source("./functions/sentiments_management.R")
 source("./functions/bigrams_management.R")
+source("./functions/s3_connect.R")
+
 #source("global.R")
 
 # /////////////////////////////////////////////////////////////////////////////////////////
@@ -218,6 +220,7 @@ server <- function(input, output, session) {
     )
   })
   
+
   # Redirected to OAuth login Agent ----
   output$ui_redirect <- renderUI({
     #print(input$login_button_oauth) useful for debugging
@@ -310,6 +313,11 @@ server <- function(input, output, session) {
       user_input$authenticated  <-  TRUE
       user_input$d2_session  <-  d2_default_session$clone()
       d2_default_session <- NULL
+      
+      #If not in dataimport.R should go here. 
+      # try({
+      #   s3_connect() #test
+      # })
       
       source("dataimport.R")
       
