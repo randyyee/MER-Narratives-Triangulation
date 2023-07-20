@@ -144,9 +144,9 @@ server <- function(input, output, session) {
           br()
         ),
         fluidRow(
-          textInput("user_name", "Username: ", width = "500px"),
-          passwordInput("password", "Password:", width = "500px"),
-          actionButton("login_button", "Log in!"),
+          #textInput("user_name", "Username: ", width = "500px"),
+          #passwordInput("password", "Password:", width = "500px"),
+          #actionButton("login_button", "Log in!"),
           
           actionButton("login_button_oauth", "Log in with DATIM"),
           uiOutput("ui_hasauth"),
