@@ -69,8 +69,8 @@ flog.appender(appender.console(), name = "usgpartners")
 #     absolute = TRUE
 #   )# This will be your local host path
 # } else {
-# deployed URL
-APP_URL <- Sys.getenv("APP_URL") #This will be your shiny server path
+  # deployed URL
+  APP_URL <- Sys.getenv("APP_URL") #This will be your shiny server path
 # }
 
 oauth_app <- httr::oauth_app(Sys.getenv("OAUTH_APPNAME"),
@@ -144,9 +144,9 @@ server <- function(input, output, session) {
           br()
         ),
         fluidRow(
-          #textInput("user_name", "Username: ", width = "500px"),
-          #passwordInput("password", "Password:", width = "500px"),
-          #actionButton("login_button", "Log in!"),
+          textInput("user_name", "Username: ", width = "500px"),
+          passwordInput("password", "Password:", width = "500px"),
+          actionButton("login_button", "Log in!"),
           
           actionButton("login_button_oauth", "Log in with DATIM"),
           uiOutput("ui_hasauth"),
@@ -156,7 +156,7 @@ server <- function(input, output, session) {
     )
     
   })
-  ########### AFTER AUTHENTICATION ############################################## 
+ ########### AFTER AUTHENTICATION ############################################## 
   # Dashboard Page (RY) ----
   output$authenticated <- renderUI({ 
     
@@ -380,12 +380,12 @@ server <- function(input, output, session) {
         rename(`Operating Unit` = Operatingunit,
                `Support Type` = Indicatortype,
                `Mechanism Code` = `Mech Code`)
-      ######################################################################################     
+ ######################################################################################     
       # Dashboard Section (RY) ----
       ## Slicer Logic ----
       
       # Filter metadata
-      narratives_meta2 <- reactive({narratives_meta})
+       narratives_meta2 <- reactive({narratives_meta})
       #   narratives_meta %>%
       #     filter(if(input$ou_list        != "All") (`Operating Unit`              %in% input$ou_list) else TRUE) %>%
       #     filter(if(input$country_list   != "All") (`Country`                     %in% input$country_list) else TRUE) %>%
