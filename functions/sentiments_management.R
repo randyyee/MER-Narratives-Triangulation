@@ -6,6 +6,10 @@ prepare_sentiments <- function(dataset){
     filter(!is.na(sentiment)) %>%
     count(`Operating Unit`, `Indicator Bundle`, Indicator, ngram, sentiment) %>%
     spread(sentiment, n, fill = 0) %>%
+    rowwise() %>%
+    mutate(positive = ifelse("positive" %in% names(.), positive, 0),
+           negative = ifelse("negative" %in% names(.), negative, 0)) %>%
+    ungroup() %>%
     mutate(sentiment = positive - negative)
   
 }
@@ -23,7 +27,7 @@ prepare_sent_contributes <- function(dataset){
 }
 
 sent_summary <- function(sent_df){
-
+  
   ind <- sent_df %>%
     select(`Operating Unit`, `Indicator Bundle`, `Indicator`, sentiment) %>%
     group_by(`Operating Unit`, `Indicator Bundle`, `Indicator`) %>%
@@ -76,8 +80,8 @@ sentiment_by_area <- function(sent_df){
 sentiment_by_ind <- function(sent_df){
   
   prepare_sentiments(sent_df) %>%
-      group_by(`Operating Unit`, `Indicator Bundle`, `Indicator`) %>%
-      summarize(total = sum(sentiment, na.rm = T)) %>%
-      ungroup()
+    group_by(`Operating Unit`, `Indicator Bundle`, `Indicator`) %>%
+    summarize(total = sum(sentiment, na.rm = T)) %>%
+    ungroup()
   
 }
