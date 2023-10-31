@@ -4,3 +4,4 @@
 .Ruserdata
 global.R
 .Rprofile
+renv/

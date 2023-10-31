@@ -28,6 +28,7 @@ library(magrittr)
 library(xml2)
 
 library(jsonlite)
+library(pdaprules)
 
 ##### Functions ####
 source("./functions/sentiments_management.R")
@@ -107,11 +108,21 @@ server <- function(input, output, session) {
   user_input  <-  reactiveValues(authenticated = FALSE,
                                  status = "",
                                  d2_session = NULL,
-                                 memo_authorized = FALSE)
+                                 memo_authorized = FALSE,
+                                 uuid = NULL)
   
   # Logout Process ----
   observeEvent(input$logout, {
     req(input$logout)
+    
+    # capture logout
+    send_event_to_s3(
+      app_name = Sys.getenv("SECRET_ID"), 
+      event_type = "LOGOUT", 
+      user_input = user_input, 
+      log_bucket = Sys.getenv("LOG_BUCKET")
+    )
+    
     # Returns to the log in screen without the authorization code at top
     updateQueryString("?", mode = "replace", session = session)
     flog.info(paste0("User ", user_input$d2_session$me$userCredentials$username, " logged out."))
@@ -121,6 +132,7 @@ server <- function(input, output, session) {
     user_input$authorized  <-  FALSE
     user_input$d2_session  <-  NULL
     d2_default_session <- NULL
+  
     gc()
     session$reload()
   })
@@ -334,6 +346,15 @@ server <- function(input, output, session) {
       user_input$authenticated  <-  TRUE
       user_input$d2_session  <-  d2_default_session$clone()
       d2_default_session <- NULL
+      
+      # capture login
+      send_event_to_s3(
+        app_name = Sys.getenv("SECRET_ID"), 
+        event_type = "LOGIN", 
+        user_input = user_input, 
+        log_bucket = Sys.getenv("LOG_BUCKET")
+      )
+      
       ######################################################################################          
       #### Narratives Resources ####
       
@@ -352,6 +373,17 @@ server <- function(input, output, session) {
         unite("period", fiscal_year:fiscal_quarter, remove = T, sep = " ") %>%
         filter(operating_unit != "\r\nOffice of U.S. Foreign Assistance Resources") %>%
         rename_all(~str_to_title(str_replace_all(., "_", " ")))
+      
+      # capture read
+      if(narratives_df) {
+        
+        send_event_to_s3(
+          app_name = Sys.getenv("SECRET_ID"), 
+          event_type = "S3_READ", 
+          user_input = user_input, 
+          log_bucket = Sys.getenv("LOG_BUCKET")
+        )
+      }
       
       narratives_meta <- narratives_df %>%
         select(c("Operating Unit", "Country", "Indicator Bundle", "Indicator", "Period", "Funding Agency", "Implementing Mechanism Name")) %>%
