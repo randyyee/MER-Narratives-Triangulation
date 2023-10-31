@@ -134,6 +134,14 @@
         "sys"
       ]
     },
+    "assertthat": {
+      "Package": "assertthat",
+      "Version": "0.2.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "50c838a310445e954bc13f26f26a6ecf",
+      "Requirements": []
+    },
     "aws.s3": {
       "Package": "aws.s3",
       "Version": "0.3.21",
@@ -365,6 +373,27 @@
       "Hash": "b4c06e554f33344e044ccd7fdca750a9",
       "Requirements": []
     },
+    "datimutils": {
+      "Package": "datimutils",
+      "Version": "0.6.0",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "datimutils",
+      "RemoteUsername": "pepfar-datim",
+      "RemoteRef": "master",
+      "RemoteSha": "31c0be49b3e7d224394c54f1578a0d901b93d8e0",
+      "Hash": "ec413295a2039c7e6e6b7b34d88ec021",
+      "Requirements": [
+        "R6",
+        "httr",
+        "jsonlite",
+        "keyring",
+        "rlang",
+        "stringi",
+        "tidyr"
+      ]
+    },
     "dbplyr": {
       "Package": "dbplyr",
       "Version": "2.3.4",
@@ -476,6 +505,14 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "f7736a18de97dea803bde0a2daaafb27",
+      "Requirements": []
+    },
+    "filelock": {
+      "Package": "filelock",
+      "Version": "1.0.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "38ec653c2613bed60052ba3787bd8a2c",
       "Requirements": []
     },
     "fontawesome": {
@@ -919,6 +956,23 @@
       "Hash": "266a20443ca13c65688b2116d5220f76",
       "Requirements": []
     },
+    "keyring": {
+      "Package": "keyring",
+      "Version": "1.3.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "b7880ebefe188d62b099673bbc04afac",
+      "Requirements": [
+        "R6",
+        "askpass",
+        "assertthat",
+        "filelock",
+        "openssl",
+        "rappdirs",
+        "sodium",
+        "yaml"
+      ]
+    },
     "knitr": {
       "Package": "knitr",
       "Version": "1.44",
@@ -1263,8 +1317,8 @@
       "RemoteRepo": "pdaprules",
       "RemoteUsername": "pepfar-datim",
       "RemoteRef": "main",
-      "RemoteSha": "d25755e579d1e497880671beb5922f06de2acfd3",
-      "Hash": "81cf29735817edd4231b74f3aa31cbd1",
+      "RemoteSha": "b8a58023b4815007b95c060f68d91d67bcebbfc4",
+      "Hash": "39269fcc65baf8380dc4c6c7639a9c3d",
       "Requirements": []
     },
     "pillar": {
@@ -1464,10 +1518,10 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "0.15.4",
+      "Version": "1.0.3",
       "Source": "Repository",
-      "Repository": "RSPM",
-      "Hash": "c1078316e1d4f70275fc1ea60c0bc431",
+      "Repository": "CRAN",
+      "Hash": "41b847654f567341725473431dd0d5ab",
       "Requirements": []
     },
     "reprex": {
@@ -1675,6 +1729,14 @@
         "promises",
         "shiny"
       ]
+    },
+    "sodium": {
+      "Package": "sodium",
+      "Version": "1.3.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "bd436c1e48dc1982125e4d955017724e",
+      "Requirements": []
     },
     "sourcetools": {
       "Package": "sourcetools",

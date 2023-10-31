@@ -114,15 +114,6 @@ server <- function(input, output, session) {
   # Logout Process ----
   observeEvent(input$logout, {
     req(input$logout)
-    # Returns to the log in screen without the authorization code at top
-    updateQueryString("?", mode = "replace", session = session)
-    flog.info(paste0("User ", user_input$d2_session$me$userCredentials$username, " logged out."))
-    ready$ok <- FALSE
-    user_input$authenticated  <-  FALSE
-    user_input$user_name <- ""
-    user_input$authorized  <-  FALSE
-    user_input$d2_session  <-  NULL
-    d2_default_session <- NULL
     
     # capture logout
     send_event_to_s3(
@@ -132,6 +123,16 @@ server <- function(input, output, session) {
       log_bucket = Sys.getenv("LOG_BUCKET")
     )
     
+    # Returns to the log in screen without the authorization code at top
+    updateQueryString("?", mode = "replace", session = session)
+    flog.info(paste0("User ", user_input$d2_session$me$userCredentials$username, " logged out."))
+    ready$ok <- FALSE
+    user_input$authenticated  <-  FALSE
+    user_input$user_name <- ""
+    user_input$authorized  <-  FALSE
+    user_input$d2_session  <-  NULL
+    d2_default_session <- NULL
+  
     gc()
     session$reload()
   })
